@@ -2,6 +2,7 @@
 This program prints stdin to the screen.
 '''
 import sys
+
 def cat(file):
     chunk_size = 4096
     while True:
@@ -16,4 +17,9 @@ if __name__ == "__main__":
             with open(filename, "rb") as f:
                 cat(f)
     else:
-        cat(sys.stdin.buffer)
+        # Use sys.stdin if it's a TTY, otherwise use sys.stdin.buffer
+        if sys.stdin.isatty():
+            for line in sys.stdin:
+                sys.stdout.write(line)
+        else:
+            cat(sys.stdin.buffer)
